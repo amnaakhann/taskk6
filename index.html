@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>task 6</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 9px;
+   
+}
+
+header h1 {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+   
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    color: #fff;
+font-size:19px;
+}
+
+nav li  {
+    display: inline;
+    margin-right: 1rem;
+    color: #fff;
+    padding-top: 4px;
+    
+}
+nav li a{
+    color: #fff;
+    list-style: none;
+    text-decoration: none;
+
+}
+
+main {
+    display: flex;
+}
+
+.sidebar {
+    flex: 1;
+    padding: 1rem;
+}
+
+.central {
+    flex: 2;
+    padding: 1rem;
+   
+}
+.central form input{
+    margin: 5px 5px 5px 5px;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 5px 5px gray;
+}
+.central form button{
+    margin-left: 9px;
+    margin-top: 9px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+
+}
+.central form button:hover{
+   background-color: rgb(120, 120, 124)
+}
+
+.search {
+    flex: 1;
+    padding: 1rem;
+}
+.search input{
+    display:inline-block;
+    padding: 7px;
+    border-radius: 5px;
+    box-shadow: 5px 5px gray;
+
+}
+.search button{
+    margin-left: 6px;
+ border-radius: 6px;
+ background-color: #333;
+ cursor: pointer;
+ color: #fff;
+ margin-top: 14px;
+}
+.search button:hover{
+    background-color: grey;
+}
+body{
+    background-color: #c4c1c1;
+}
+body .heading{
+    padding-left: 345px;
+    padding-top: 30px;
+    font-size: 40px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-shadow: 4px 4px grey;
+    padding-bottom: 250px;
+    background-image: url('https://studyinsweden.se/transformations/2017/05/cecilia_larsson_lantz-stockholm_university_library-2614.jpg-1920x.jpg');
+    background-position: center;
+    color: rgb(223, 219, 213);
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+    </style>
+</head>
+<body>
+    <h1 class="heading">Online Library Management System</h1>
+    <header>
+       
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+
+        <div class="sidebar">
+            <h1>OLMS</h1>
+            <h2>Book List</h2>
+            <ul id="book-list">
+               
+            </ul>
+        </div>
+        <div class="central">
+            <h2>Add New Book</h2>
+            <form id="add-book-form">
+               <div> <input type="text" id="title" placeholder="Title" required></div>
+              <div>  <input type="text" id="author" placeholder="Author" required></div>
+              <div>  <input type="text" id="category" placeholder="Category" required></div>
+              <div>  <input type="number" id="quantity" placeholder="Quantity" required></div>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
+        <div class="search">
+            <h2>Search for Books</h2>
+            <input type="text" id="search-input" placeholder="Search...">
+           <div> <button>search</button></div>
+            <ul id="search-results">
+                <!-- Search results will be added here dynamically -->
+            </ul>
+        </div>
+        <script>
+        const books = [
+            { title: " The Alchemist", author: "Paulo Coelho:", category: "Fiction", quantity: 5 },
+            { title: "Sapiens: A Brief History of Humankind", author: " Yuval Noah Harari", category: "Non-Fiction", quantity: 3 },
+            // Add more book data here
+            { title: " Untamed", author: " Glennon Doyle:", category: "jorney", quantity: 6 },
+           
+        ];
+        
+        const bookList = document.getElementById("book-list");
+        const addBookForm = document.getElementById("add-book-form");
+        const searchInput = document.getElementById("search-input");
+        const searchResults = document.getElementById("search-results");
+        
+        // Function to display books in the book list
+        function displayBooks() {
+            bookList.innerHTML = "";
+            books.forEach((book, index) => {
+                const li = document.createElement("li");
+                li.textContent = `${book.title} by ${book.author}`;
+                bookList.appendChild(li);
+            });
+        }
+        
+        // Function to add a new book
+        addBookForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const title = document.getElementById("title").value;
+            const author = document.getElementById("author").value;
+            const category = document.getElementById("category").value;
+            const quantity = document.getElementById("quantity").value;
+            
+            // Add the new book to the books array (you should save it to a database in a real application)
+            books.push({ title, author, category, quantity });
+            const isDuplicate = books.some((book) => book.title === title && book.author === author);
+
+if (isDuplicate) {
+    alert("This book already exists in the library.");
+} else {
+    // Add the new book to the books array (you should save it to a database in a real application)
+    books.push({ title, author, category, quantity });
+
+    // Clear the form
+    addBookForm.reset();
+
+    // Update the book list
+    displayBooks();
+}
+});
+
+
+
+
+
+
+        
+        
+        
+        // Function to search for books
+        searchInput.addEventListener("input", () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            searchResults.innerHTML = "";
+            const results = books.filter((book) => book.title.toLowerCase().includes(searchTerm) || book.author.toLowerCase().includes(searchTerm));
+            results.forEach((book) => {
+                const li = document.createElement("li");
+                li.textContent = `${book.title} by ${book.author}`;
+                searchResults.appendChild(li);
+            });
+        });
+        
+        // Initial book list display
+        displayBooks();
+        </script>
+
+</body>
+</html>
